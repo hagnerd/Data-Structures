@@ -52,35 +52,140 @@ class DoublyLinkedList:
     as the new head of the list. Don't forget to handle 
     the old head node's previous pointer accordingly."""
     def add_to_head(self, value):
-        pass
+        self.length += 1
+
+        prev = self.head
+        new_node = ListNode(value, None, prev)
+        self.head = new_node
+        if prev is not None:
+            prev.prev = self.head
+        else:
+            self.tail = new_node
+
 
     """Removes the List's current head node, making the
     current head's next node the new head of the List.
     Returns the value of the removed Node."""
     def remove_from_head(self):
-        pass
+        if self.length == 0:
+            return None
+
+        prev_head = self.head
+
+        self.length -= 1
+
+        if self.head.next is None:
+            self.head = None
+            self.tail = None
+        else:
+            new_head = prev_head.next
+            new_head.prev = None
+
+        return prev_head.value
 
     """Wraps the given value in a ListNode and inserts it 
     as the new tail of the list. Don't forget to handle 
     the old tail node's next pointer accordingly."""
     def add_to_tail(self, value):
-        pass
+        self.length += 1
+
+        prev_tail = self.tail
+        new_node = ListNode(value, prev_tail, None)
+        self.tail = new_node
+
+        if self.head is None:
+            self.head = new_node
+
+        if prev_tail is not None:
+            prev_tail.next = new_node
 
     """Removes the List's current tail node, making the 
     current tail's previous node the new tail of the List.
     Returns the value of the removed Node."""
     def remove_from_tail(self):
-        pass
+        if self.length == 0:
+            return None
+
+        prev_tail = self.tail
+
+        self.length -= 1
+
+        if prev_tail.prev is None:
+            self.head = None
+            self.tail = None
+        else:
+            new_tail = prev_tail.prev
+            new_tail.next = None
+
+        return prev_tail.value
 
     """Removes the input node from its current spot in the 
     List and inserts it as the new head node of the List."""
     def move_to_front(self, node):
         pass
 
-    """Removes the input node from its current spot in the 
+    def find_node(self, node):
+        if self.length == 0:
+            return None
+        elif self.length == 1 and self.head == node:
+            return node
+
+        should_continue = True
+        current_node = None
+        found_node = None
+
+        while should_continue:
+
+            # First element in our dll
+            if current_node is None:
+                current_node = self.head
+            elif current_node.next is not None:
+                current-node = current_node.next
+
+    """Removes the input node from its current spot in the
     List and inserts it as the new tail node of the List."""
     def move_to_end(self, node):
-        pass
+        should_continue = True
+        current_node = None
+        found_node = None
+
+        if self.length == 1:
+            # The dll is only 1 element long, no need to search
+            should_continue = False
+
+        while should_continue:
+
+            if current_node is None:
+                current_node = self.head
+            elif current_node.next is not None:
+                current_node = current_node.next
+
+            if current_node == node:
+                found_node = current_node
+
+            if current_node.next is None or found_node is not None:
+                should_continue = False
+            else:
+                should_continue = True
+
+        if found_node is None:
+            return
+
+        prev_node = found_node.prev
+        next_node = found_node.next
+
+
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+        prev_tail = self.tail
+
+        prev_tail.next = found_node
+        found_node.next = None
+        found_node.prev = prev_tail
+
+        return found_node
+
 
     """Removes a node from the list and handles cases where
     the node was the head or the tail"""
