@@ -27,7 +27,7 @@ class LRUCache:
         key-value pair doesn't exist in the cache.
         """
         if key in self.storage:
-            node = self.storage[key] # node.value = (apple, 'is a fruit')
+            node = self.storage[key]
             self.order.move_to_front(node)
             return node.value[1]
         else:
@@ -54,7 +54,6 @@ class LRUCache:
             self.order.remove_from_tail()
             self.size -= 1
 
-        # add the node to storage
         self.order.add_to_head((key, value))
         self.storage[key] = self.order.head
         self.size += 1
